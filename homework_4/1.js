@@ -10,16 +10,12 @@
 // getUserData использует fetch для получения данных о пользователе с удаленного сервера. Если запрос успешен (с кодом 200), функция извлекает данные из ответа с помощью response.json() и возвращает объект с данными о пользователе. Если запрос неуспешен, функция отклоняет промис с сообщением об ошибке.
 
 function getUserData(userId) {
-    return fetch(`https://jsonplaceholder.typicode.com/users/`).then(
+    return fetch(`https://jsonplaceholder.typicode.com/users/${userId}`).then(
         (response) => {
-            if (response.ok) {
-                const users = response.json();
-                for (let key in users) {
-                    console.log(key);
-                }
+            if (!response.ok) {
+                throw new Error(`User with ID ${userId} not found`);
             }
-
-            throw new Error(`User with ID ${userId} not found`);
+            return response.json();
         }
     );
 }
